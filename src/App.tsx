@@ -1,7 +1,15 @@
 import { useState } from 'react'
 import './App.css'
+import storeItems from './data/states'
 import State from  "./data/states"
 
+type StoreItems= {
+  id: number,
+  name: string,
+  price: number,
+  stock: number,
+  inCart: number
+}
 function App() {
   const [count, setCount] = useState(0)
  const[card, setCard]=useState(State)
@@ -13,6 +21,19 @@ function App() {
  
 }
 
+function increaseQuantity(item: StoreItems) {
+  const ItemCopy = structuredClone(card)
+
+    // change
+    const targetItem =ItemCopy .find(target => target.id === item.id)
+
+  if (targetItem.stock === 0) return
+  targetItem.inCart++
+  targetItem.stock--
+
+  setCard(targetItem)
+}
+
   return (
     <div className="App">
   
@@ -21,7 +42,9 @@ function App() {
       <h1>Grocero</h1>
       {State.map(cards =>(<ul className="item-list store--item-list">
        <li><div className=".store--item-icon"><img src={getItemImagePath(cards)} /></div>
-           <button>Add to cart ({cards.stock})</button></li>
+           <button onClick={()=>{
+            increaseQuantity(cards)
+           }}>Add to cart ({cards.stock})</button></li>
    </ul>))}
     </header> 
 
