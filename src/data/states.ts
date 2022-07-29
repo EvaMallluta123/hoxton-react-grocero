@@ -1,5 +1,5 @@
-let state = {
-  storeItems: [
+
+   let storeItems= [
     {
       id: 1,
       name: 'beetroot',
@@ -21,6 +21,6 @@ let state = {
       stock: 1,
       inCart: 0,
     },
-  ],
-}
-export default state
+  ]
+
+  export default storeItems
