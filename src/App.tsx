@@ -4,22 +4,40 @@ import State from  "./data/states"
 
 function App() {
   const [count, setCount] = useState(0)
+ const[card, setCard]=useState(State)
+
+
+ function getItemImagePath(item) {
+  let id = String(item.id).padStart(3, '0')
+  return `dist/assets/icons/${id}-${item.name}.svg`
  
+}
 
   return (
     <div className="App">
   
   <body>
-    <header id="store">
+   <header id="store">
       <h1>Grocero</h1>
-      <ul className="item-list store--item-list"><li><div className=".store--item-icon"><img src="dist\assets\icons\001-beetroot.svg"/></div><button>Add to cart (10)</button></li><li><div className=".store--item-icon"><img src="dist/assets/icons/002-carrot.svg"/></div><button>Add to cart (2)</button></li><li><div className=".store--item-icon"><img src="dist/assets/icons/003-apple.svg"/></div><button>Add to cart (1)</button></li></ul>
-    </header>
+      {State.map(cards =>(<ul className="item-list store--item-list">
+       <li><div className=".store--item-icon"><img src={getItemImagePath(cards)} /></div>
+           <button>Add to cart ({cards.stock})</button></li>
+   </ul>))}
+    </header> 
 
     <main id="cart">
       <h2>Your Cart</h2>
 
       <div className="cart--item-list-container">
-        <ul className="item-list cart--item-list"><li><img className="cart--item-icon" src="dist/assets/icons/002-carrot.svg" alt="carrot"/><p>carrot</p><button className="quantity-btn remove-btn center">-</button><span className="quantity-text center">5</span><button className="quantity-btn add-btn center">+</button></li></ul>
+        <ul className="item-list cart--item-list">
+        {State.map(cards =>(
+        <li><img className="cart--item-icon" src={getItemImagePath(cards)} alt="carrot"/>
+        <p>carrot</p>
+        <button className="quantity-btn remove-btn center">-</button>
+        <span className="quantity-text center">{cards.inCart}</span>
+        <button className="quantity-btn add-btn center">+</button>
+        </li>
+        ))}</ul>
       </div>
 
       <div className="total-section">
