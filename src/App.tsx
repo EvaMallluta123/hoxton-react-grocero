@@ -10,29 +10,52 @@ type StoreItems= {
   stock: number,
   inCart: number
 }
+
+function getItemImagePath(item) {
+  let id = String(item.id).padStart(3, '0')
+  return `dist/assets/icons/${id}-${item.name}.svg`
+}
 function App() {
   const [count, setCount] = useState(0)
  const[card, setCard]=useState(State)
 
+  function getCartItems() {
+    return card.filter(item => item.inCart > 0)
+  }
+  function increaseQuantity(item) {
+    const cardCopy= structuredClone(card)
+    const match= cardCopy.find(target=>target.id===item.id)
 
- function getItemImagePath(item) {
-  let id = String(item.id).padStart(3, '0')
-  return `dist/assets/icons/${id}-${item.name}.svg`
- 
-}
+  
+    match.inCart++
+    match.stock--
+    setCard(cardCopy)
 
-function increaseQuantity(item: StoreItems) {
-  const ItemCopy = structuredClone(card)
 
-    // change
-    const targetItem =ItemCopy .find(target => target.id === item.id)
+    if (item.stock === 0) return
 
-  if (targetItem.stock === 0) return
-  targetItem.inCart++
-  targetItem.stock--
+  }
+  function decreaseQuantity(item) {
+    const cardCopy= structuredClone(card)
+    const match= cardCopy.find(target=>target.id===item.id)
 
-  setCard(targetItem)
-}
+  
+    match.inCart--
+    match.stock++
+    setCard(cardCopy)
+
+    
+    if (item.stock > 0) return
+
+  }
+
+  function getTotal(){
+    let total=0
+
+    for(let item of card)
+    total=+item.inCart*item.price
+
+  }
 
   return (
     <div className="App">
@@ -43,7 +66,7 @@ function increaseQuantity(item: StoreItems) {
       {State.map(cards =>(<ul className="item-list store--item-list">
        <li><div className=".store--item-icon"><img src={getItemImagePath(cards)} /></div>
            <button onClick={()=>{
-            increaseQuantity(cards)
+            increaseQuantity(card)
            }}>Add to cart ({cards.stock})</button></li>
    </ul>))}
     </header> 
@@ -55,7 +78,7 @@ function increaseQuantity(item: StoreItems) {
         <ul className="item-list cart--item-list">
         {State.map(cards =>(
         <li><img className="cart--item-icon" src={getItemImagePath(cards)} alt="carrot"/>
-        <p>carrot</p>
+        <p>{cards.name}</p>
         <button className="quantity-btn remove-btn center">-</button>
         <span className="quantity-text center">{cards.inCart}</span>
         <button className="quantity-btn add-btn center">+</button>
@@ -75,7 +98,7 @@ function increaseQuantity(item: StoreItems) {
     </main>
   
 
-</body>Name
+</body>
 
     </div>
   )

@@ -54,7 +54,7 @@
       name: 'berry',
       price: 0.25,
       stock: 3,
-      inCart: 2,
+      inCart: 0,
     },
     {
       id: 9,
